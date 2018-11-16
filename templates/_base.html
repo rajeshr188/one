@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<title>{% block title %}DjangoX{% endblock title %}</title>
+<title>{% block title %}One X{% endblock title %}</title>
 <meta name="description" content="A framework for launching new Django projects quickly.">
 <meta name="author" content="">
 <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
@@ -20,13 +20,91 @@
 
 <body>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-      <a class="navbar-brand" href="{% url 'home' %}">DjangoX</a>
+      <a class="navbar-brand" href="{% url 'home' %}">One X</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
+
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Contact</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'contact_customer_list' %}">Customer</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'contact_supplier_list' %}">Supplier</a>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{% url 'product_product_list' %}" role="button" aria-haspopup="true" aria-expanded="false">Product</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'product_category_list' %}">Category</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'product_producttype_list' %}">Product Type</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'product_product_list' %}">Product</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'product_productvariant_list' %}">Product Variant</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'product_stock_list' %}">Stock</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'product_stocktransaction_list' %}">StockTransaction</a>
+              </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Girvi</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'girvi_loan_list'%}">Loan</a>
+              <a class="dropdown-item" href="={% url 'girvi_release_list'%}">Release</a>
+              <a class="dropdown-item" href="{%url 'girvi_license_list'%}">License</a>
+              <a class="dropdown-item" href="#">Ledger</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="https://example.com"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Add Invoice</a>
+              <a class="dropdown-item" href="#">Invoice List</a>
+              <a class="dropdown-item" href="#">Receipt</a>
+              <a class="dropdown-item" href="#">Receipt List</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="https://example.com"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Add Purchase</a>
+              <a class="dropdown-item" href="#">Purchase List</a>
+              <a class="dropdown-item" href="#">Payment</a>
+              <a class="dropdown-item" href="#">Payment List</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{% url 'chit_list' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Chit</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url 'chit_list'%}">Chit</a>
+              <a class="dropdown-item" href="{% url 'collection_list'%}">Collection</a>
+              <a class="dropdown-item" href="{% url 'allotment_list' %}">Allotment</a>
+
+            </div>
+          </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
         {% if user.is_authenticated %}
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="#">Daybook</a>
+        </li>
             <li class="nav-item">
               <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ user.email }}
@@ -54,7 +132,7 @@
   </div>
 
    <nav class="navbar fixed-bottom navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">&copy; DjangoX 2018</a>
+    <a class="navbar-brand" href="#">&copy; One X 2018</a>
   </nav>
 
   {% block javascript %}

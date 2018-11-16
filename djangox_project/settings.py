@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,15 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',  # new
+    'django.contrib.postgres',
 
     # Third-party
     'allauth',  # new
     'allauth.account',  # new
     'crispy_forms',  # new
+    'rest_framework','mptt','phonenumber_field',
 
     # Local
     'users',
-    'pages',
+    'pages','contact','product','girvi','sales','purchase','Chitfund',
 ]
 
 MIDDLEWARE = [
@@ -84,12 +87,15 @@ WSGI_APPLICATION = 'djangox_project.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'one',
+        'USER': 'rajesh rathod',
+        'PASSWORD': 'kanchan188',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -130,7 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
-] 
+]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
