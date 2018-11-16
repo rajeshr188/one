@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+{{form.media.css}}
 {% endblock %}
 </head>
 
@@ -59,34 +61,45 @@
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Girvi</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="{% url 'girvi_loan_list'%}">Loan</a>
-              <a class="dropdown-item" href="={% url 'girvi_release_list'%}">Release</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'girvi_release_list'%}">Release</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{%url 'girvi_license_list'%}">License</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Ledger</a>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Add Invoice</a>
-              <a class="dropdown-item" href="#">Invoice List</a>
-              <a class="dropdown-item" href="#">Receipt</a>
-              <a class="dropdown-item" href="#">Receipt List</a>
+              <a class="dropdown-item" href="{% url 'sales_invoice_create' %}">Add Invoice</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'sales_invoice_list' %}">Invoice List</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'sales_receipt_create' %}">Add Receipt</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'sales_receipt_list' %}">Receipt List</a>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Purchase</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Add Purchase</a>
-              <a class="dropdown-item" href="#">Purchase List</a>
-              <a class="dropdown-item" href="#">Payment</a>
-              <a class="dropdown-item" href="#">Payment List</a>
+              <a class="dropdown-item" href="{% url 'purchase_invoice_create'%}">Add Purchase</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'purchase_invoice_list'%}">Purchase List</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'purchase_payment_create'%}">Payment</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'purchase_payment_list'%}">Payment List</a>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'chit_list' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Chit</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="{% url 'chit_list'%}">Chit</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'collection_list'%}">Collection</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'allotment_list' %}">Allotment</a>
 
             </div>
@@ -140,13 +153,13 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
   <!-- 3rd party JavaScript -->
 
   <!-- Project JS -->
   <script src="{% static 'js/base.js' %}"></script>
 
   {% endblock javascript %}
-
+{{form.media.js}}
 </body>
 </html>

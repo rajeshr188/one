@@ -1,34 +1,61 @@
 {% extends "_base.html" %}
 {% load static %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'contact_customer_list' %}">Customer Listing</a></p>
-<table class="table">
-<tr>
-<td>ID</td><td>Link</td>
-    <td>name</td>
-    <td>slug</td>
-    <td>created</td>
-    <td>last_updated</td>
-    <td>phonenumber</td>
-    <td>Address</td>
-    <td>type</td>
-    <td>relatedas</td>
-    <td>relatedto</td>
-</tr>
-{% for object in object_list %}
-<tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.name }}</td>
-    <td>{{ object.slug }}</td>
-    <td>{{ object.created }}</td>
-    <td>{{ object.last_updated }}</td>
-    <td>{{ object.phonenumber }}</td>
-    <td>{{ object.Address }}</td>
-    <td>{{ object.type }}</td>
-    <td>{{ object.relatedas }}</td>
-    <td>{{ object.relatedto }}</td>
-</tr>
-{% endfor %}
-</table><a class="btn btn-primary" href="{% url 'contact_customer_create' %}">Create new Customer</a>
+<ul class="nav nav-pills ">
+  <li class="nav-item">
+    <a class="nav-link active" href="{% url 'contact_customer_list' %}">Customer Listing</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'contact_customer_create' %}">Add Customer</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Import</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Export</a>
+  </li>
+</ul>
+
+<div class="row">
+  <div class="col col-lg">
+    <table class="table">
+      <tr>
+        <td>ID</td><td>Link</td>
+        <td>name</td>
+        <td>slug</td>
+        <td>created</td>
+        <td>last_updated</td>
+        <td>phonenumber</td>
+        <td>Address</td>
+        <td>type</td>
+        <td>relatedas</td>
+        <td>relatedto</td>
+      </tr>
+      {% for object in object_list %}
+      <tr>
+        <td>{{object.pk}}</td>
+        <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+        <td>{{ object.name }}</td>
+        <td>{{ object.slug }}</td>
+        <td>{{ object.created }}</td>
+        <td>{{ object.last_updated }}</td>
+        <td>{{ object.phonenumber }}</td>
+        <td>{{ object.Address }}</td>
+        <td>{{ object.type }}</td>
+        <td>{{ object.relatedas }}</td>
+        <td>{{ object.relatedto }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    <div class="col col-sm">
+      <ul class="list-group">
+  <li class="list-group-item list-group-item-dark">filter by</li>
+  <li class="list-group-item">Dapibus ac facilisis in</li>
+  <li class="list-group-item">Morbi leo risus</li>
+  <li class="list-group-item">Porta ac consectetur ac</li>
+  <li class="list-group-item">Vestibulum at eros</li>
+</ul>
+      </div>
+  </div>
 {% endblock %}

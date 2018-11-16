@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import models as auth_models
 from django.db import models as models
 from django_extensions.db import fields as extension_fields
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Customer(models.Model):
 
@@ -20,7 +20,7 @@ class Customer(models.Model):
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    phonenumber = models.CharField(max_length=20)
+    phonenumber = PhoneNumberField()
     Address = models.TextField(max_length=100)
     type = models.CharField(max_length=30)
     relatedas = models.CharField(max_length=30)
@@ -49,7 +49,7 @@ class Supplier(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
     organisation = models.CharField(max_length=30)
-    phonenumber = models.CharField(max_length=30)
+    phonenumber = PhoneNumberField()
     initial = models.CharField(max_length=30)
 
 
@@ -65,5 +65,3 @@ class Supplier(models.Model):
 
     def get_update_url(self):
         return reverse('contact_supplier_update', args=(self.slug,))
-
-

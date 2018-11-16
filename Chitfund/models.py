@@ -14,7 +14,7 @@ from django.contrib.auth import models as auth_models
 from django.db import models as models
 from django_extensions.db import fields as extension_fields
 from datetime import datetime
-
+from django.utils import timezone
 class Contact(models.Model):
 
     # Fields
@@ -92,7 +92,7 @@ class Collection(models.Model):
 
     # Fields
     slug = extension_fields.AutoSlugField(populate_from='member', blank=True)
-    date_collected = models.DateTimeField(default=datetime.now())
+    date_collected = models.DateTimeField(default=timezone.now)
     amount = models.PositiveIntegerField()
 
     # Relationship Fields
@@ -126,7 +126,7 @@ class Allotment(models.Model):
     amount = models.PositiveIntegerField()
     installment=models.PositiveIntegerField()
     slug = extension_fields.AutoSlugField(populate_from='to_member', blank=True)
-    created = models.DateTimeField(default=datetime.now())
+    created = models.DateTimeField(default=timezone.now)
 
     # Relationship Fields
     chit = models.ForeignKey(

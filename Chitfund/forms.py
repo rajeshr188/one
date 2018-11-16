@@ -26,7 +26,7 @@ class ChitForm(forms.ModelForm):
 class CollectionForm(forms.ModelForm):
     class Meta:
         model = Collection
-        fields = ['date_collected','allotment', 'member','amount', ]
+        fields = ['allotment', 'member','amount', ]
 
     def clean(self):
         a=self.cleaned_data['allotment']
