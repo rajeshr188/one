@@ -21,21 +21,22 @@ class Customer(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
     phonenumber = PhoneNumberField()
-    Address = models.TextField(max_length=100)
-    type = models.CharField(max_length=30)
-    relatedas = models.CharField(max_length=30)
-    relatedto = models.CharField(max_length=30)
-
+    Address = models.TextField(max_length=100,blank=True)
+    ctype=(('Wh','Wholesale'),('Re','Retail'))
+    type = models.CharField(max_length=30,choices=ctype,default='Re')
+    ras=(('S/o','S/o'),('D/o','D/o'),('W/o','W/o'),('R/o','R/o'))
+    relatedas = models.CharField(max_length=5,choices=ras,default='S/o')
+    relatedto = models.CharField(max_length=30,blank=True)
+    area = models.CharField(max_length=50,blank=True)
 
     class Meta:
         ordering = ('-created',)
 
-    def __unicode__(self):
-        return u'%s' % self.slug
+    def __str__(self):
+        return f"{self.name} {self.relatedas} {self.relatedto} {self.phonenumber}"
 
     def get_absolute_url(self):
         return reverse('contact_customer_detail', args=(self.slug,))
-
 
     def get_update_url(self):
         return reverse('contact_customer_update', args=(self.slug,))
@@ -56,7 +57,7 @@ class Supplier(models.Model):
     class Meta:
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.slug
 
     def get_absolute_url(self):

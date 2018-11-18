@@ -1,18 +1,95 @@
 {% extends "_base.html" %}
 {% load static %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'contact_customer_list' %}">Customer Listing</a></p>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2"><strong>{{customer.name}}</strong>    {{customer.relatedas}}  {{customer.relatedto}}<br /></h1>
+  <address>
+
+    {{customer.address}},{{customer.area}}<br />
+    {{customer.phonenumber}} <br/>
+  </address>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <a class="btn btn-primary" href="{% url 'contact_customer_update' object.slug%}">Edit Customer</a>
+    <a class="btn btn-primary"  role="button"href="{% url 'girvi_loan_create' customer.id %}">Add Loan</a>
+      <button class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+  Loans  <span class="badge badge-info">{{customer.loan_set.all.count}}</span>
+  Amount <span class="badge badge-info">{{customer.totalloanamount}}</span>
+
+  Gold<span class="badge badge-info"></span>
+  silver<span class="badge badge-info"></span>
+  Bronze<span class="badge badge-info"></span>
+  </div>
+</div><br />
 <table class="table">
-<tr><td>name</td><td>{{ object.name }}</td></tr>
-<tr><td>slug</td><td>{{ object.slug }}</td></tr>
-<tr><td>created</td><td>{{ object.created }}</td></tr>
-<tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-<tr><td>phonenumber</td><td>{{ object.phonenumber }}</td></tr>
-<tr><td>Address</td><td>{{ object.Address }}</td></tr>
-<tr><td>type</td><td>{{ object.type }}</td></tr>
-<tr><td>relatedas</td><td>{{ object.relatedas }}</td></tr>
-<tr><td>relatedto</td><td>{{ object.relatedto }}</td></tr>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">LoanId</th>
+      <th scope="col">Loan Date</th>
+      <th scope="col">Item</th>
+      <th scope="col">Item Weight</th>
+      <th scope="col">Loan Amount</th>
+      <th scope="col">No of Months</th>
+      <th scope="col">status</th>
+      <th scope="col">Interest Due</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for loan in customer.loan_set.all   %}
+      {% if loan.release %}
+        <tr class="table-success">      <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+              <td>{{loan.created.date}} </td>
+              <td>{{loan.itemdescription}}</td>
+              <td>{{loan.itemweight}}</td>
+              <td>{{loan.loanamount}}</td>
+              <td>{{loan.noofmonths}} </td>
+              <td>{{loan.bill}} </td>
+              <td>{{loan.interest}}</td>
+              <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
+              <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
+
+            </tr>
+      {% elif loan.noofmonths > 12%}
+        <tr class="table-danger">
+          <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+          <td>{{loan.created.date}} </td>
+          <td>{{loan.itemdescription}}</td>
+          <td>{{loan.itemweight}}</td>
+          <td>{{loan.loanamount}}</td>
+          <td>{{loan.noofmonths}} </td>
+          <td>{{loan.bill}} </td>
+          <td>{{loan.interestdue}}</td>
+          <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
+          <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
+
+        </tr>
+      {% else%}
+          <tr>
+            <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+            <td>{{loan.created.date}} </td>
+            <td>{{loan.itemdescription}}</td>
+            <td>{{loan.itemweight}}</td>
+            <td>{{loan.loanamount}}</td>
+            <td>{{loan.noofmonths}} </td>
+            <td>{{loan.release}} </td>
+            <td>{{loan.interest}}</td>
+            <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
+            <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
+
+          </tr>
+
+        {%endif %}
+
+    {%endfor %}
+  </tbody>
 </table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Customer</a>
 
 {% endblock %}

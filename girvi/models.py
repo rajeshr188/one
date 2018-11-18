@@ -16,7 +16,8 @@ from django.contrib.auth import models as auth_models
 from django.db import models as models
 from django_extensions.db import fields as extension_fields
 from contact.models import Customer
-
+import datetime
+from django.utils import timezone
 class License(models.Model):
 
     # Fields
@@ -24,7 +25,9 @@ class License(models.Model):
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    type = models.CharField(max_length=30)
+    lt=(('PBL','Pawn Brokers License'),
+            ('GST','Goods & Service Tax'))
+    type = models.CharField(max_length=30,choices=lt,default='PBL')
     shopname = models.CharField(max_length=30)
     address = models.TextField(max_length=100)
     phonenumber = models.CharField(max_length=30)
@@ -34,15 +37,32 @@ class License(models.Model):
     class Meta:
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.slug
 
     def get_absolute_url(self):
         return reverse('girvi_license_detail', args=(self.slug,))
 
-
     def get_update_url(self):
         return reverse('girvi_license_update', args=(self.slug,))
+
+    def noofloans(self):
+        return self.loan_set.count()
+
+    def totalloan(self):
+        return self.loan_set.aggregate(Sum('loan__loanamount'))
+
+    def totalgoldloan(self):
+        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__loanamount'))
+
+    def totalsilver(self):
+        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__loanamount'))
+
+    def totalgoldweight(self):
+        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__itemweight'))
+
+    def totalsilverweight(self):
+        return self.loan_set.filter(loan__itemtype='Silver').aggregate(Sum('loan__itemweight'))
 
 
 class Loan(models.Model):
@@ -50,9 +70,13 @@ class Loan(models.Model):
     # Fields
     loanid = models.CharField(max_length=255)
     slug = extension_fields.AutoSlugField(populate_from='loanid', blank=True)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
+    created = models.DateTimeField(default=timezone.now)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    itemtype = models.CharField(max_length=30)
+    itype=(
+            ('Gold','Gold'),
+            ('Silver','Silver'),
+            ('Bronze','Bronze'),('O','Other'),)
+    itemtype = models.CharField(max_length=30,choices=itype,default='Gold')
     itemdesc = models.TextField(max_length=30)
     itemweight = models.DecimalField(max_digits=10, decimal_places=2)
     itemvalue = models.DecimalField(max_digits=10, decimal_places=2)
@@ -67,21 +91,46 @@ class Loan(models.Model):
     )
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE, related_name="investee"
+        on_delete=models.CASCADE, 
     )
 
     class Meta:
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.slug
 
     def get_absolute_url(self):
         return reverse('girvi_loan_detail', args=(self.slug,))
 
-
     def get_update_url(self):
         return reverse('girvi_loan_update', args=(self.slug,))
+
+    def noofmonths(self):
+        cd=datetime.datetime.now()
+        nom=(cd.year-self.created.year)*12 +cd.month-self.created.month
+        if(nom<=0):
+            return 0
+        else:
+            return nom-1
+
+    def interestdue(self):
+        return float(((self.loanamount)*self.noofmonths()*(self.interestrate))/100)
+
+    def total(self):
+        return self.interestdue() + float(self.loanamount)
+
+    def is_released(self):
+        return hasattr(self,'release')
+
+    def is_worth(self):
+        return self.itemvalue<total
+
+    def save(self,*args,**kwargs):
+        self.interest=self.interestdue()
+        #self.loanamount=self.loanamount - Decimal(self.interest)
+        # self.itemvalue=self.loanamount+500
+        super().save(*args,**kwargs)
 
 
 class Release(models.Model):
@@ -96,7 +145,7 @@ class Release(models.Model):
     # Relationship Fields
     loan = models.ForeignKey(
         'girvi.Loan',
-        on_delete=models.CASCADE, related_name="loans"
+        on_delete=models.CASCADE, related_name="release"
     )
     customer = models.ForeignKey(
         Customer,
@@ -106,7 +155,7 @@ class Release(models.Model):
     class Meta:
         ordering = ('-created',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.slug
 
     def get_absolute_url(self):
