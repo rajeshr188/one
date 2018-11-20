@@ -79,7 +79,7 @@ class Loan(models.Model):
     itemtype = models.CharField(max_length=30,choices=itype,default='Gold')
     itemdesc = models.TextField(max_length=30)
     itemweight = models.DecimalField(max_digits=10, decimal_places=2)
-    itemvalue = models.DecimalField(max_digits=10, decimal_places=2)
+    itemvalue = models.DecimalField(max_digits=10, decimal_places=2,null=True)
     loanamount = models.PositiveIntegerField()
     interestrate = models.PositiveSmallIntegerField()
     interest = models.PositiveIntegerField()
@@ -91,7 +91,7 @@ class Loan(models.Model):
     )
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
     )
 
     class Meta:

@@ -1,58 +1,27 @@
 {% extends "_base.html" %}
 {% load static %}
+{%load django_tables2%}
+{%load bootstrap4%}
 {% block content %}
-<ul class="nav nav-pills ">
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'contact_customer_list' %}">Customer Listing</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'contact_customer_create' %}">Add Customer</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Import</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Export</a>
-  </li>
-</ul>
 
-<div class="row">
-  <div class="col col-sm-2">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-dark">filter by</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Morbi leo risus</li>
-      <li class="list-group-item">Porta ac consectetur ac</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Customers</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+     <a class="btn btn-primary" href="{% url 'contact_customer_create' %}" role="button">New Customer</a>
+     <a class="btn btn-primary" href="{% url 'contact_customer_list' %}" role="button">Customer List</a>
+     <a class="btn btn-primary" href="{% export_url "ods" %}" role="button">export</a>
+
     </div>
-  <div class="col col-lg">
-    <table class="table table-striped">
-      <tr>
-        <td>name</td>
-        <td>created</td>
-        <td>phonenumber</td>
-        <td>Address</td>
-        <td>type</td>
-        <td>relatedas</td>
-        <td>relatedto</td><td></td>
-      </tr>
-      {% for object in object_list %}
-      <tr>
-        <td><a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
-        <td>{{ object.created|date }}</td>
-        <td>{{ object.phonenumber }}</td>
-        <td>{{ object.Address }}</td>
-        <td>{{ object.type }}</td>
-        <td>{{ object.relatedas }}</td>
-        <td>{{ object.relatedto }}</td>
-        <td><a href="{% url 'contact_customer_update' object.slug %}">Update</a>
-      / <a href="{% url 'contact_customer_delete' object.id %}">Delete</a>
-
-      </tr>
-      {% endfor %}
-    </table>
-    </div>
-
   </div>
+</div>
+
+{% if filter %}
+    <form action="" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+{% endif %}
+{% render_table table 'django_tables2/bootstrap.html'  %}
+
 {% endblock %}

@@ -55,7 +55,7 @@ class InvoiceItem(models.Model):
     weight = models.DecimalField(max_digits=10, decimal_places=2)
     touch = models.PositiveSmallIntegerField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
-    is_return = models.CharField(max_length=30)
+    is_return = models.CharField(max_length=30,verbose_name='Return')
     quantity = models.IntegerField()
 
     # Relationship Fields

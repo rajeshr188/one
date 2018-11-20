@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-
+from django_filters.views import FilterView
 from . import api
 from . import views
 

@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     # Third-party
     'allauth',  # new
     'allauth.account',  # new
-    'crispy_forms',  # new
-    'rest_framework','mptt','phonenumber_field',
+    'crispy_forms','bootstrap4' ,'import_export', # new
+    'rest_framework','mptt','phonenumber_field','django_tables2','django_filters','widget_tweaks',
 
     # Local
     'users',

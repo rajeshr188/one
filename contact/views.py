@@ -1,10 +1,23 @@
 from django.views.generic import DetailView, ListView, UpdateView, CreateView,DeleteView
+from django_tables2 import RequestConfig
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
+from .tables import CustomerTable
+from django_filters.views import FilterView
+from .filters import CustomerFilter
 from .models import Customer, Supplier
 from .forms import CustomerForm, SupplierForm
 from django.urls import reverse,reverse_lazy
 from girvi.models import Loan
-class CustomerListView(ListView):
+
+class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
+    table_class = CustomerTable
+    # table_data = Customer.objects.all()
+    # paginator_class = LazyPaginator
     model = Customer
+    template_name = 'contact/customer_list.html'
+    filterset_class = CustomerFilter
+    paginate_by = 50
 
 class CustomerCreateView(CreateView):
     model = Customer

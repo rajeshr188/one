@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django import forms
+from import_export import fields,resources
+from import_export.admin import ImportExportModelAdmin
+from import_export.widgets import ForeignKeyWidget
 from .models import License, Loan, Release
+from contact.models import Customer
 
 class LicenseAdminForm(forms.ModelForm):
 
@@ -16,6 +20,17 @@ class LicenseAdmin(admin.ModelAdmin):
 
 admin.site.register(License, LicenseAdmin)
 
+class LoanResource(resources.ModelResource):
+    customer=fields.Field(column_name='customer',
+                            attribute='customer',
+                            widget=ForeignKeyWidget(Customer,'pk'))
+    license=fields.Field(column_name='license',
+                            attribute='license',
+                            widget=ForeignKeyWidget(License,'id'))
+    class Meta:
+        model=Loan
+        #import_id_fields = ('id',)
+        fields=('id','loanid','customer','license','created','itemtype','itemweight','itemdesc','loanamount','interestrate','value')
 
 class LoanAdminForm(forms.ModelForm):
 
@@ -24,13 +39,13 @@ class LoanAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class LoanAdmin(admin.ModelAdmin):
+class LoanAdmin(ImportExportModelAdmin):
     form = LoanAdminForm
-    list_display = ['loanid', 'slug', 'created', 'last_updated', 'itemtype', 'itemdesc', 'itemweight', 'itemvalue', 'loanamount', 'interestrate', 'interest']
-    readonly_fields = ['loanid', 'slug', 'created', 'last_updated', 'itemtype', 'itemdesc', 'itemweight', 'itemvalue', 'loanamount', 'interestrate', 'interest']
+    resource_class=LoanResource
+    list_display = ['id','loanid', 'slug', 'created', 'last_updated', 'itemtype', 'itemdesc', 'itemweight', 'itemvalue', 'loanamount', 'interestrate', 'interest']
+    readonly_fields = ['id','loanid', 'slug', 'created', 'last_updated', 'itemtype', 'itemdesc', 'itemweight', 'itemvalue', 'loanamount', 'interestrate', 'interest']
 
 admin.site.register(Loan, LoanAdmin)
-
 
 class ReleaseAdminForm(forms.ModelForm):
 

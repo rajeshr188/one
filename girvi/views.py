@@ -3,6 +3,12 @@ from .models import License, Loan, Release
 from .forms import LicenseForm, LoanForm, ReleaseForm
 from django.urls import reverse,reverse_lazy
 from contact.models import Customer
+from django_tables2 import RequestConfig
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
+from .tables import LoanTable
+from django_filters.views import FilterView
+from .filters import LoanFilter
 import re
 class LicenseListView(ListView):
     model = License
@@ -22,8 +28,13 @@ class LicenseDeleteView(DeleteView):
     model=License
     success_url=reverse_lazy('girvi_license_list')
 
-class LoanListView(ListView):
+class LoanListView(ExportMixin,SingleTableMixin,FilterView):
+    table_class=LoanTable
+    # table_data=Loan.objects.all()
     model = Loan
+    template_name='girvi/loan_list.html'
+    filterset_class=LoanFilter
+    paginate_by=50
 
 def incloanid():
     last=Loan.objects.all().order_by('id').last()

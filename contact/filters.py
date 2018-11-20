@@ -1,4 +1,4 @@
-from . models import Customer,Loan
+from .models import Customer
 import django_filters
 
 class CustomerFilter(django_filters.FilterSet):
@@ -6,4 +6,4 @@ class CustomerFilter(django_filters.FilterSet):
     relatedto=django_filters.CharFilter(lookup_expr='icontains')
     class Meta:
         model=Customer
-        fields=['contactno','area']
+        fields=['id','name','relatedto','phonenumber','type','area']

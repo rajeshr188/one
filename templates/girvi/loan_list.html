@@ -1,38 +1,27 @@
 {% extends "_base.html" %}
 {% load static %}
+{%load django_tables2%}
+{%load bootstrap4%}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'girvi_loan_list' %}">Loan Listing</a></p>
-<table class="table">
-<tr>
-<td>ID</td><td>Link</td>
-    <td>loanid</td>
-    <td>slug</td>
-    <td>created</td>
-    <td>last_updated</td>
-    <td>itemtype</td>
-    <td>itemdesc</td>
-    <td>itemweight</td>
-    <td>itemvalue</td>
-    <td>loanamount</td>
-    <td>interestrate</td>
-    <td>interest</td>
-</tr>
-{% for object in object_list %}
-<tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.loanid }}</td>
-    <td>{{ object.slug }}</td>
-    <td>{{ object.created }}</td>
-    <td>{{ object.last_updated }}</td>
-    <td>{{ object.itemtype }}</td>
-    <td>{{ object.itemdesc }}</td>
-    <td>{{ object.itemweight }}</td>
-    <td>{{ object.itemvalue }}</td>
-    <td>{{ object.loanamount }}</td>
-    <td>{{ object.interestrate }}</td>
-    <td>{{ object.interest }}</td>
-</tr>
-{% endfor %}
-</table><a class="btn btn-primary" href="{% url 'girvi_loan_create' %}">Create new Loan</a>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Loan</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+     <a class="btn btn-primary" href="{% url 'girvi_loan_create' %}" role="button">New Loan</a>
+     <a class="btn btn-primary" href="{% url 'girvi_loan_list' %}" role="button">Loan List</a>
+     <a class="btn btn-primary" href="{% export_url "ods" %}" role="button">export</a>
+
+    </div>
+  </div>
+</div>
+
+{% if filter %}
+    <form action="" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+{% endif %}
+{% render_table table 'django_tables2/bootstrap.html'  %}
+
 {% endblock %}

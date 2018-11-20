@@ -20,7 +20,7 @@ class Customer(models.Model):
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    phonenumber = PhoneNumberField()
+    phonenumber = models.CharField(max_length=15)
     Address = models.TextField(max_length=100,blank=True)
     ctype=(('Wh','Wholesale'),('Re','Retail'))
     type = models.CharField(max_length=30,choices=ctype,default='Re')
