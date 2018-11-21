@@ -9,6 +9,10 @@ from .models import Customer, Supplier
 from .forms import CustomerForm, SupplierForm
 from django.urls import reverse,reverse_lazy
 from girvi.models import Loan
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
     table_class = CustomerTable
@@ -22,6 +26,8 @@ class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
 class CustomerCreateView(CreateView):
     model = Customer
     form_class = CustomerForm
+    success_url=reverse_lazy('contact_customer_list')
+
 
 class CustomerDetailView(DetailView):
     model = Customer

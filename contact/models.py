@@ -17,6 +17,7 @@ class Customer(models.Model):
 
     # Fields
     name = models.CharField(max_length=255)
+    pic=models.ImageField(upload_to='contacts/customer/pic/',null=True,blank=True)
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
