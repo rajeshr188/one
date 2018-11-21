@@ -10,12 +10,10 @@ class ImageColumn(tables.Column):
 class CustomerTable(tables.Table):
     name = tables.LinkColumn('contact_customer_detail', args=[A('slug')])
     pic = ImageColumn()
+    relatedas=tables.Column(orderable=False)
     edit = tables.LinkColumn('contact_customer_update', args=[A('slug')],attrs={'a':{"class":"btn btn-outline-info","role":"button"}}, orderable=False, empty_values=())
     delete = tables.LinkColumn('contact_customer_delete', args=[A('slug')],attrs={'a':{"class":"btn btn-outline-danger","role":"button"}}, orderable=False, empty_values=())
-    # update=tables.LinkColumn('contact_customer_update',args=[A('slug')])
-    # customer_first_name = tables.LinkColumn('customer-detail', args=[A('pk')])
-    # customer_last_name = tables.LinkColumn('customer-detail', args=[A('pk')])
-    # customer_email = tables.LinkColumn('customer-detail', args=[A('pk')])
+    
     def render_edit(self):
         return 'Edit'
     def render_delete(self):

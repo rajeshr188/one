@@ -14,6 +14,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+def home(request):
+    data = []
+    return render(request,'contact/home.html',context={'data':data},
+    )
 class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
     table_class = CustomerTable
     # table_data = Customer.objects.all()

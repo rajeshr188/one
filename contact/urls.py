@@ -16,6 +16,7 @@ urlpatterns = (
 
 urlpatterns += (
     # urls for Customer
+    path('',views.home,name='contact_home'),
     path('customer/', views.CustomerListView.as_view(), name='contact_customer_list'),
     path('customer/create/', views.CustomerCreateView.as_view(), name='contact_customer_create'),
     path('customer/detail/<slug:slug>/', views.CustomerDetailView.as_view(), name='contact_customer_detail'),
