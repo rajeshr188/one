@@ -11,7 +11,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import models as auth_models
 from django.db import models as models
 from django_extensions.db import fields as extension_fields
-from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models import Avg,Count,Sum
+# from phonenumber_field.modelfields import PhoneNumberField
 
 class Customer(models.Model):
 
@@ -42,16 +43,33 @@ class Customer(models.Model):
     def get_update_url(self):
         return reverse('contact_customer_update', args=(self.slug,))
 
+    def get_total_loanamount(self):
+        amount=self.loan_set.aggregate(total=Sum('loanamount'))
+        return amount['total']
+
+    def get_total_loans(self):
+        return self.loan_set.count()
+
+    # def get_interestdue(Self):
+    #     interestdue=self.loan_set.aggregate(total=Sum('interestdue'))
+    def get_gold_weight(self):
+        gold=self.loan_set.filter(itemtype='Gold').aggregate(total=Sum('itemweight'))
+        return gold['total']
+
+    def get_silver_weight(self):
+        silver=self.loan_set.filter(itemtype='Silver').aggregate(total=Sum('itemweight'))
+        return silver['total']
 
 class Supplier(models.Model):
 
     # Fields
     name = models.CharField(max_length=255)
+    pic=models.ImageField(upload_to='contacts/supplier/pic/',null=True,blank=True)
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
     organisation = models.CharField(max_length=30)
-    phonenumber = PhoneNumberField()
+    phonenumber = models.CharField(max_length=15)
     initial = models.CharField(max_length=30)
 
 

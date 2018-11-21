@@ -2,9 +2,9 @@ from django.views.generic import DetailView, ListView, UpdateView, CreateView,De
 from django_tables2 import RequestConfig
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from .tables import CustomerTable
+from .tables import CustomerTable,SupplierTable
 from django_filters.views import FilterView
-from .filters import CustomerFilter
+from .filters import CustomerFilter,SupplierFilter
 from .models import Customer, Supplier
 from .forms import CustomerForm, SupplierForm
 from django.urls import reverse,reverse_lazy
@@ -15,13 +15,13 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
-    data = []
+    data = dict()
+    data['customercount']=str(Customer.objects.count())
+    data['suppliercount']=Customer.objects.count()
     return render(request,'contact/home.html',context={'data':data},
     )
 class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
     table_class = CustomerTable
-    # table_data = Customer.objects.all()
-    # paginator_class = LazyPaginator
     model = Customer
     template_name = 'contact/customer_list.html'
     filterset_class = CustomerFilter
@@ -44,8 +44,12 @@ class CustomerDelete(DeleteView):
     model=Customer
     success_url = reverse_lazy('contact_customer_list')
 
-class SupplierListView(ListView):
+class SupplierListView(ExportMixin,SingleTableMixin,FilterView):
+    table_class = SupplierTable
     model = Supplier
+    template_name = 'contact/supplier_list.html'
+    filterset_class = SupplierFilter
+    paginate_by = 50
 
 class SupplierCreateView(CreateView):
     model = Supplier
