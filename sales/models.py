@@ -16,16 +16,24 @@ from django.db import models as models
 from django_extensions.db import fields as extension_fields
 from contact.models import Customer
 from product.models import ProductVariant
-
+from django.utils import timezone
 class Invoice(models.Model):
 
     # Fields
     slug = extension_fields.AutoSlugField(populate_from='id', blank=True)
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    last_updated = models.DateTimeField(auto_now=True, editable=False)
+    created = models.DateTimeField(default=timezone.now)
+    last_updated = models.DateTimeField(default=timezone.now)
     rate = models.PositiveSmallIntegerField()
-    balancetype = models.CharField(max_length=30)
-    paymenttype = models.CharField(max_length=30)
+    btype_choices=(
+            ("Cash","Cash"),
+            ("Metal","Metal")
+        )
+    itype_choices=(
+        ("Cash","Cash"),
+        ("Credit","Credit")
+    )
+    balancetype = models.CharField(max_length=30,choices=btype_choices,default="Cash")
+    paymenttype = models.CharField(max_length=30,choices=itype_choices,default="Cash")
     balance = models.DecimalField(max_digits=10, decimal_places=3)
     status = models.CharField(max_length=30)
 
@@ -55,9 +63,9 @@ class InvoiceItem(models.Model):
     weight = models.DecimalField(max_digits=10, decimal_places=2)
     touch = models.PositiveSmallIntegerField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
-    is_return = models.CharField(max_length=30,verbose_name='Return')
+    is_return = models.BooleanField(default=False,verbose_name='Return')
     quantity = models.IntegerField()
-
+    makingcharge=models.DecimalField(max_digits=10,decimal_places=2,default=0)
     # Relationship Fields
     product = models.ForeignKey(
         ProductVariant,

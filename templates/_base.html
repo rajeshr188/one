@@ -12,12 +12,14 @@
 
 {% block css %}
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
 {{form.media.css}}
 {% endblock %}
+
 </head>
 
 <body>
@@ -35,8 +37,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'contact_home' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Contact</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="{% url 'contact_home' %}">Home</a>
-              <div class="dropdown-divider"></div>
+              
               <a class="dropdown-item" href="{% url 'contact_customer_list' %}">Customer</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'contact_supplier_list' %}">Supplier</a>
@@ -164,6 +165,8 @@
   <!-- 3rd party JavaScript -->
 
   <!-- Project JS -->
+  <!-- <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script> -->
+
   <script src="{% static 'js/base.js' %}"></script>
 
   {% endblock javascript %}

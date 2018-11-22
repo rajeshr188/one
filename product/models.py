@@ -194,7 +194,6 @@ class Attribute(models.Model):
     name = models.CharField(max_length=50)
     slug = AutoSlugField(populate_from='name', blank=True)
 
-
     class Meta:
         ordering = ('slug', )
 
