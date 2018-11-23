@@ -2,10 +2,7 @@
 {% load static %}
 {% load bootstrap4 %}
 {% block content %}
-{% block javascript %}
- <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'js/jquery.formset.js' %}"></script>
-{% endblock javascript%}
+
 <p><h2 class="h3 mb-3 font-weight-normal">Add Invoice</h2></p>
     <form action="." method="post">
         {% csrf_token %}

@@ -3,93 +3,101 @@
 {% block content %}
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-  <h1 class="h2"><strong>{{customer.name}}</strong>    {{customer.relatedas}}  {{customer.relatedto}}<br /></h1>
-  <address>
 
-    {{customer.address}},{{customer.area}}<br />
-    {{customer.phonenumber}} ,{{customer.pic}}<br/>
-  </address>
   <div class="btn-toolbar mb-2 mb-md-0">
     <div class="btn-group mr-2">
-      <a class="btn btn-primary" href="{% url 'contact_customer_update' object.slug%}">Edit Customer</a>
-    <a class="btn btn-primary"  role="button"href="{% url 'girvi_loan_create' customer.id %}">Add Loan</a>
-      <button class="btn btn-sm btn-outline-secondary">Export</button>
+      <a class="btn btn-primary ml-2" href="{% url 'contact_customer_update' object.slug%}">Edit Customer</a>
+      <a class="btn btn-primary ml-2 "  role="button"href="{% url 'girvi_loan_create' customer.id %}">Add Loan</a>
+      <button class="btn btn-sm btn-outline-secondary ml-2">Export</button>
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-9">
+    <div class="table-responsive-sm">
+    <table class="table table-sm table-bordered table-striped">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">LoanId</th>
+          <th scope="col">Created</th>
+          <th scope="col">Item</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Amount</th>
+          <th scope="col">NoofMonths</th>
+          <th scope="col">status</th>
+          <th scope="col">Interest</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for loan in customer.get_loans   %}
+          {% if loan.release %}
+            <tr class="table-success">      <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+                  <td>{{loan.created.date}} </td>
+                  <td>{{loan.itemdescription}}</td>
+                  <td>{{loan.itemweight}}</td>
+                  <td>{{loan.loanamount}}</td>
+                  <td>{{loan.noofmonths}} </td>
+                  <td>{{loan.bill}} </td>
+                  <td>{{loan.interest}}</td>
+                  <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
+                  <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
 
-<div class="card">
-  <div class="card-body">
-  Loans  <span class="badge badge-info">{{customer.loan_set.all.count}}</span>
-  Amount <span class="badge badge-info">{{customer.totalloanamount}}</span>
-
-  Gold<span class="badge badge-info"></span>
-  silver<span class="badge badge-info"></span>
-  Bronze<span class="badge badge-info"></span>
-  </div>
-</div><br />
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">LoanId</th>
-      <th scope="col">Loan Date</th>
-      <th scope="col">Item</th>
-      <th scope="col">Item Weight</th>
-      <th scope="col">Loan Amount</th>
-      <th scope="col">No of Months</th>
-      <th scope="col">status</th>
-      <th scope="col">Interest Due</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for loan in customer.loan_set.all   %}
-      {% if loan.release %}
-        <tr class="table-success">      <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+                </tr>
+          {% elif loan.noofmonths > 12%}
+            <tr class="table-danger">
+              <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
               <td>{{loan.created.date}} </td>
               <td>{{loan.itemdescription}}</td>
               <td>{{loan.itemweight}}</td>
               <td>{{loan.loanamount}}</td>
               <td>{{loan.noofmonths}} </td>
               <td>{{loan.bill}} </td>
-              <td>{{loan.interest}}</td>
+              <td>{{loan.interestdue}}</td>
               <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
               <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
 
             </tr>
-      {% elif loan.noofmonths > 12%}
-        <tr class="table-danger">
-          <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
-          <td>{{loan.created.date}} </td>
-          <td>{{loan.itemdescription}}</td>
-          <td>{{loan.itemweight}}</td>
-          <td>{{loan.loanamount}}</td>
-          <td>{{loan.noofmonths}} </td>
-          <td>{{loan.bill}} </td>
-          <td>{{loan.interestdue}}</td>
-          <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
-          <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
+          {% else%}
+              <tr>
+                <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
+                <td>{{loan.created.date}} </td>
+                <td>{{loan.itemdescription}}</td>
+                <td>{{loan.itemweight}}</td>
+                <td>{{loan.loanamount}}</td>
+                <td>{{loan.noofmonths}} </td>
+                <td>{{loan.release}} </td>
+                <td>{{loan.interest}}</td>
+                <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
+                <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
 
-        </tr>
-      {% else%}
-          <tr>
-            <th scope="row"><a href="{% url 'girvi_loan_detail' loan.id %}">{{loan.loanid}}</a></th>
-            <td>{{loan.created.date}} </td>
-            <td>{{loan.itemdescription}}</td>
-            <td>{{loan.itemweight}}</td>
-            <td>{{loan.loanamount}}</td>
-            <td>{{loan.noofmonths}} </td>
-            <td>{{loan.release}} </td>
-            <td>{{loan.interest}}</td>
-            <td><a href="{% url 'girvi_loan_update' loan.id %}">Update</a> / <a href="{%url 'girvi_loan_delete' loan.id%}">Delete</a>/
-            <a href="{%url 'girvi_release_create' loan.loanid%}">Release</a></td>
+              </tr>
 
-          </tr>
+            {%endif %}
 
-        {%endif %}
+        {%endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="col-3">
 
-    {%endfor %}
-  </tbody>
-</table>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center active"><h6">Statistics</h6></li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Loans  <span class="badge badge-primary badge-pill">{{customer.get_loans_count}}</span></li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center"">Amount <span class="badge badge-info badge-pill">{{customer.get_total_loanamount}}</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Gold<span class="badge badge-info badge-pill">{{customer.get_gold_weight}}</span>
+
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">silver<span class="badge badge-info badge-pill">{{customer.get_silver_weight}}</span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">Bronze<span class="badge badge-info badge-pill"></span></li>
+          </ul>
+
+  </div>
+</div>
+
+
 
 {% endblock %}

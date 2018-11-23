@@ -42,12 +42,15 @@ class Customer(models.Model):
 
     def get_update_url(self):
         return reverse('contact_customer_update', args=(self.slug,))
+    @property
+    def get_loans(self):
+        return self.loan_set.all()
 
     def get_total_loanamount(self):
         amount=self.loan_set.aggregate(total=Sum('loanamount'))
         return amount['total']
 
-    def get_total_loans(self):
+    def get_loans_count(self):
         return self.loan_set.count()
 
     # def get_interestdue(Self):
