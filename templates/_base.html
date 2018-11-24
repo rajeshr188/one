@@ -64,8 +64,10 @@
               </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Girvi</a>
+            <a class="nav-link dropdown-toggle" href="{% url 'girvi-home'%}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Girvi</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'girvi-home'%}">Home</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'girvi_loan_list'%}">Loan</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'girvi_release_list'%}">Release</a>

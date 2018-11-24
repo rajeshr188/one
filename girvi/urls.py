@@ -14,7 +14,9 @@ urlpatterns = (
     # urls for Django Rest Framework API
     path('api/v1/', include(router.urls)),
 )
-
+urlpatterns +=(
+    path('',views.home,name='girvi-home'),
+)
 urlpatterns += (
     # urls for License
     path('girvi/license/', views.LicenseListView.as_view(), name='girvi_license_list'),

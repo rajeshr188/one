@@ -47,6 +47,17 @@ class LoanAdmin(ImportExportModelAdmin):
 
 admin.site.register(Loan, LoanAdmin)
 
+class ReleaseResource(resources.ModelResource):
+    customer=fields.Field(column_name='customer',
+                            attribute='customer',
+                            widget=ForeignKeyWidget(Customer,'pk'))
+    loan=fields.Field(column_name='loan',
+                            attribute='loan',
+                            widget=ForeignKeyWidget(Loan,'pk'))
+    class Meta:
+        model=Release
+        fields=('releaseid','created','customer','loan','interestpaid')
+
 class ReleaseAdminForm(forms.ModelForm):
 
     class Meta:
@@ -54,8 +65,10 @@ class ReleaseAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ReleaseAdmin(admin.ModelAdmin):
+class ReleaseAdmin(ImportExportModelAdmin):
     form = ReleaseAdminForm
+    resource_class=ReleaseResource
+    
     list_display = ['releaseid','loan','customer', 'slug', 'created', 'last_updated', 'interestpaid']
     readonly_fields = ['releaseid','loan','customer', 'slug', 'created', 'last_updated', 'interestpaid']
 

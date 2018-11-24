@@ -18,6 +18,8 @@ from django_extensions.db import fields as extension_fields
 from contact.models import Customer
 import datetime
 from django.utils import timezone
+from django.db.models import Avg,Count,Sum
+
 class License(models.Model):
 
     # Fields
@@ -46,23 +48,23 @@ class License(models.Model):
     def get_update_url(self):
         return reverse('girvi_license_update', args=(self.slug,))
 
-    def noofloans(self):
+    def loan_count(self):
         return self.loan_set.count()
 
-    def totalloan(self):
-        return self.loan_set.aggregate(Sum('loan__loanamount'))
+    def total_loan_amount(self):
+        return self.loan_set.aggregate(t=Sum('loanamount'))
 
-    def totalgoldloan(self):
-        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__loanamount'))
+    def total_gold_loan(self):
+        return self.loan_set.filter(itemtype='Gold').aggregate(t=Sum('loanamount'))
 
-    def totalsilver(self):
-        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__loanamount'))
+    def total_silver_loan(self):
+        return self.loan_set.filter(itemtype='Silver').aggregate(t=Sum('loanamount'))
 
-    def totalgoldweight(self):
-        return self.loan_set.filter(loan__itemtype='Gold').aggregate(Sum('loan__itemweight'))
+    def total_gold_weight(self):
+        return self.loan_set.filter(itemtype='Gold').aggregate(t=Sum('itemweight'))
 
-    def totalsilverweight(self):
-        return self.loan_set.filter(loan__itemtype='Silver').aggregate(Sum('loan__itemweight'))
+    def total_silver_weight(self):
+        return self.loan_set.filter(itemtype='Silver').aggregate(t=Sum('itemweight'))
 
 
 class Loan(models.Model):
@@ -87,7 +89,7 @@ class Loan(models.Model):
     # Relationship Fields
     license = models.ForeignKey(
         License,
-        on_delete=models.CASCADE, related_name="license"
+        on_delete=models.CASCADE,
     )
     customer = models.ForeignKey(
         Customer,
@@ -125,6 +127,9 @@ class Loan(models.Model):
 
     def is_worth(self):
         return self.itemvalue<total
+
+    def get_loan_amount(self):
+        return self.aggregate(t=Sum('loanamount'))
 
     def save(self,*args,**kwargs):
         self.interest=self.interestdue()

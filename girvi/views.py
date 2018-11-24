@@ -10,6 +10,47 @@ from .tables import LoanTable
 from django_filters.views import FilterView
 from .filters import LoanFilter
 import re
+from django.utils import timezone
+from django.shortcuts import render
+from django.db.models import Avg,Count,Sum
+from num2words import num2words
+import math
+def home(request):
+    data = dict()
+
+    customer=dict()
+    c=Customer.objects
+    customer['count']=c.count()
+    customer['latest']=','.join(lat.name for lat in c.order_by('-created')[:5])
+
+    license =dict()
+    l=License.objects
+    license['count']=l.count()
+    license['licenses']=','.join(lic.name for lic in l.all())
+
+
+    loan=dict()
+    l=Loan.objects
+    loan['count']=l.count()
+    loan['latest']=','.join(lat.loanid for lat in l.order_by('-created')[:5])
+    loan['amount']=l.aggregate(t=Sum('loanamount'))
+    loan['amount_words']=num2words(loan['amount']['t'],lang='en_IN')
+    loan['gold_amount']=l.filter(itemtype='Gold').aggregate(t=Sum('loanamount'))
+    loan['gold_weight']=l.filter(itemtype='Gold').aggregate(t=Sum('itemweight'))
+    loan['gavg']=math.ceil(loan['gold_amount']['t']/loan['gold_weight']['t'])
+    loan['silver_amount']=l.filter(itemtype='Silver').aggregate(t=Sum('loanamount'))
+    loan['silver_weight']=l.filter(itemtype='Silver').aggregate(t=Sum('itemweight'))
+    loan['savg']=math.ceil(loan['silver_amount']['t']/loan['silver_weight']['t'])
+    release=dict()
+    r=Release.objects
+    release['count']=r.count()
+
+    data['customer']=customer
+    data['license']=license
+    data['loan']=loan
+    data['release']=release
+    return render(request,'girvi/home.html',context={'data':data},)
+
 class LicenseListView(ListView):
     model = License
 
@@ -47,7 +88,7 @@ def incloanid():
 def ld():
     last=Loan.objects.all().order_by('id').last()
     if not last:
-        return '1'
+        return timezone.now
     return last.created
 
 class LoanCreateView(CreateView):

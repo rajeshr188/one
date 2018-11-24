@@ -8,5 +8,6 @@ class LoanTable(tables.Table):
     class Meta:
         model=Loan
         fields=('id','license','loanid','created','customer','itemtype','itemdesc','itemweight','loanamount','value','interestrate')
-        attrs={"class":"table table-striped table-bordered"}
+        attrs={"class":"table table-sm table-striped table-bordered table-hover"}
         empty_text = "There are no customers matching the search criteria..."
+        template_name = 'django_tables2/bootstrap4.html'

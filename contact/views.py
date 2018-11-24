@@ -18,8 +18,8 @@ def home(request):
     data = dict()
     data['customercount']=str(Customer.objects.count())
     data['suppliercount']=Customer.objects.count()
-    return render(request,'contact/home.html',context={'data':data},
-    )
+    return render(request,'contact/home.html',context={'data':data},)
+
 class CustomerListView(ExportMixin,SingleTableMixin,FilterView):
     table_class = CustomerTable
     model = Customer

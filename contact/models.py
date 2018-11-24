@@ -49,7 +49,7 @@ class Customer(models.Model):
     def get_total_loanamount(self):
         amount=self.loan_set.aggregate(total=Sum('loanamount'))
         return amount['total']
-
+    @property
     def get_loans_count(self):
         return self.loan_set.count()
 

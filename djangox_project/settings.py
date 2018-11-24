@@ -92,9 +92,11 @@ WSGI_APPLICATION = 'djangox_project.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-        # 'default':env.db('DATABASE_URL'),
-
-       'default': {
+         # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
+        # 'default': env.db(),
+         # read os.environ['SQLITE_URL']
+        # 'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db'),
+        'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'one',
         'USER': 'rajesh rathod',
@@ -128,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

@@ -96,7 +96,7 @@ class Receipt(models.Model):
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
-    type = models.CharField(max_length=30)
+    type = models.CharField(max_length=30,verbose_name='Metal/Gold')
     total = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(max_length=100)
 
