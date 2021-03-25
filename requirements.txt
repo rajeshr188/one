@@ -65,7 +65,7 @@ pyRXP==2.1.2
 PySocks==1.6.8
 python3-openid==3.1.0
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.4
 reportlab==3.5.8
 requests==2.20.0
 requests-oauthlib==1.0.0
