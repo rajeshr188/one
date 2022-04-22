@@ -59,7 +59,7 @@ psycopg2-binary==2.7.5
 py-moneyed==0.7.0
 pycparser==2.19
 PyJWT==1.6.4
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 Pyphen==0.9.5
 pyRXP==2.1.2
 PySocks==1.6.8
